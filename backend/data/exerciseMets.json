@@ -1,0 +1,18 @@
+[
+  { "name": "Walking", "aliases": ["walk", "walking", "stroll"], "met": 3.5 },
+  { "name": "Running", "aliases": ["run", "running", "jog", "jogging"], "met": 9.8 },
+  { "name": "Cycling", "aliases": ["cycle", "cycling", "bike", "biking"], "met": 7.5 },
+  { "name": "Yoga", "aliases": ["yoga"], "met": 2.5 },
+  { "name": "Swimming", "aliases": ["swim", "swimming"], "met": 8.0 },
+  { "name": "Gym / Weight Training", "aliases": ["gym", "weight training", "weightlifting", "leg day", "chest day", "back day", "arm day", "shoulder day", "workout", "lifting"], "met": 6.0 },
+  { "name": "Skipping Rope", "aliases": ["skipping", "jump rope", "skipping rope"], "met": 10.0 },
+  { "name": "Dancing", "aliases": ["dance", "dancing", "zumba"], "met": 5.5 },
+  { "name": "Stair Climbing", "aliases": ["stairs", "climbing stairs", "stair climbing"], "met": 8.8 },
+  { "name": "Football", "aliases": ["football", "soccer"], "met": 7.0 },
+  { "name": "Cricket", "aliases": ["cricket"], "met": 5.0 },
+  { "name": "Badminton", "aliases": ["badminton"], "met": 5.5 },
+  { "name": "Basketball", "aliases": ["basketball"], "met": 6.5 },
+  { "name": "Cardio", "aliases": ["cardio", "hiit"], "met": 8.0 },
+  { "name": "Stretching", "aliases": ["stretching", "stretch"], "met": 2.3 },
+  { "name": "Trekking / Hiking", "aliases": ["trek", "trekking", "hike", "hiking"], "met": 6.0 }
+]

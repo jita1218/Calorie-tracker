@@ -80,6 +80,8 @@ ration), then start logging meals from the Today tab.
 - Calorie estimates from photos are approximations. Portion size is the
   biggest source of error — edit the numbers before confirming if you know
   your actual serving was bigger or smaller.
-- This is a single-user local app (one profile, stored in one SQLite file).
-  For multi-user or cloud deployment you'd want to add auth and swap SQLite
-  for a hosted database — the route structure makes that a contained change.
+- Single-user: there's no login, every request acts as the one local user.
+  Data is stored in one SQLite file (`backend/thali.db`).
+- The photo-analysis endpoint is capped per user per day
+  (`ANALYZE_DAILY_LIMIT`, default 30) to bound AI provider costs, on top of
+  general IP-based rate limiting.

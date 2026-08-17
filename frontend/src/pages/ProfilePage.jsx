@@ -1,18 +1,25 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { api } from '../api.js';
 import ProfileForm from '../components/ProfileForm.jsx';
+import ErrorState from '../components/ErrorState.jsx';
 
 export default function ProfilePage({ onProfileSaved }) {
   const [initial, setInitial] = useState(null);
   const [target, setTarget] = useState(null);
   const [savedMsg, setSavedMsg] = useState(false);
+  const [loadError, setLoadError] = useState('');
 
-  useEffect(() => {
-    api.getProfile().then((res) => {
-      setInitial(res.profile);
-      setTarget(res.target);
-    });
+  const load = useCallback(() => {
+    setLoadError('');
+    api.getProfile()
+      .then((res) => {
+        setInitial({ ...res.profile, name: res.profile.name || res.username || '' });
+        setTarget(res.target);
+      })
+      .catch((err) => setLoadError(err.message));
   }, []);
+
+  useEffect(() => { load(); }, [load]);
 
   function handleSaved(result) {
     setInitial(result.profile);
@@ -22,6 +29,7 @@ export default function ProfilePage({ onProfileSaved }) {
     setTimeout(() => setSavedMsg(false), 2500);
   }
 
+  if (loadError) return <ErrorState message={loadError} onRetry={load} />;
   if (!initial) return <p className="text-cardamom">Loading profile…</p>;
 
   return (

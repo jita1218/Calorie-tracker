@@ -2,26 +2,38 @@ import { useEffect, useState } from 'react';
 import { api, todayStr } from '../api.js';
 import ThaliRing from '../components/ThaliRing.jsx';
 import LogTimeline from '../components/LogTimeline.jsx';
+import ErrorState from '../components/ErrorState.jsx';
 
 export default function HistoryPage() {
   const [date, setDate] = useState(todayStr());
   const [summary, setSummary] = useState(null);
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
 
   async function load(d) {
     setLoading(true);
-    const [summaryRes, logsRes] = await Promise.all([api.getSummary(d), api.getLogs(d)]);
-    setSummary(summaryRes);
-    setLogs(logsRes.logs);
-    setLoading(false);
+    setLoadError('');
+    try {
+      const [summaryRes, logsRes] = await Promise.all([api.getSummary(d), api.getLogs(d)]);
+      setSummary(summaryRes);
+      setLogs(logsRes.logs);
+    } catch (err) {
+      setLoadError(err.message);
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => { load(date); }, [date]);
 
   async function handleDelete(id) {
-    await api.deleteLog(id);
-    load(date);
+    try {
+      await api.deleteLog(id);
+      load(date);
+    } catch (err) {
+      setLoadError(err.message);
+    }
   }
 
   return (
@@ -37,7 +49,9 @@ export default function HistoryPage() {
         />
       </div>
 
-      {loading || !summary ? (
+      {loadError && !summary ? (
+        <ErrorState message={loadError} onRetry={() => load(date)} />
+      ) : loading || !summary ? (
         <p className="text-cardamom">Loading…</p>
       ) : (
         <div className="grid md:grid-cols-2 gap-6">
