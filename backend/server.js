@@ -23,11 +23,17 @@ const allowedOrigins = (process.env.ALLOWED_ORIGINS || 'http://localhost:5173')
   .map((o) => o.trim())
   .filter(Boolean);
 
+function isAllowedOrigin(origin) {
+  if (!origin) return true; // non-browser clients / same-origin requests
+  if (allowedOrigins.includes(origin)) return true;
+  if (origin.endsWith('.vercel.app')) return true; // allow Vercel preview deployments
+  return false;
+}
+
 app.use(helmet());
 app.use(cors({
   origin(origin, callback) {
-    // Non-browser clients (native app, curl, server-to-server) send no Origin header.
-    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+    if (isAllowedOrigin(origin)) return callback(null, true);
     callback(new Error('Not allowed by CORS'));
   },
 }));
